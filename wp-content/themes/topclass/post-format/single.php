@@ -1,0 +1,93 @@
+<?php
+/**
+ * The template used for displaying page content in page.php
+ *
+ * @package JW Theme
+ */
+?>
+
+	<div  id="post-container" class="col-md-8" role="main">
+		<div class="post-container">
+			<article id="post-<?php the_ID(); ?>"  <?php post_class(); ?>>
+
+				<?php if ( has_post_thumbnail() ) { ?>
+					<div class="post-thumbnail">
+						<?php the_post_thumbnail('blog-thumb'); ?>
+					</div>
+				<?php } ?>
+
+
+				<div class="post-content">
+
+					<?php the_title( sprintf( '<h2 class="post-title">' ), '</h2>' ); ?>
+
+					<div class="entry"><?php the_content();?>
+						<?php
+							wp_link_pages( array(
+								'before' => '<div class="page-links">' . __( 'Pages:', 'jwtheme' ),
+								'after'  => '</div>',
+							) );
+						?>
+					</div>
+
+					<footer class="post-meta">
+						<div class="entry-meta pull-left">
+							<span class="entry-date"><i class="fa fa-clock-o"></i><time datetime="<?php the_time( 'c' ); ?>">
+								<?php echo get_the_date('M');?> <?php echo get_the_date('y');?> </time>
+							</span>
+
+							<?php if( has_tag() ){ ?>
+								<span class="tag-links"><i class="fa fa-tag"></i>
+									<?php the_tags(' ' , ' , '); ?>
+								</span>
+							<?php } ?>
+							<ul>
+							<?php wp_list_categories(); ?>
+							</ul>
+
+						</div><!-- /.entry-meta -->
+								
+					</footer><!-- /.post-meta -->
+				</div><!-- /.post-content --> 
+			</article><!-- /.post -->
+
+
+			<div class="author-bio-container">
+				<div class="author-bio">
+					<div class="about-author">
+						
+						<?php echo get_avatar( get_the_author_meta( 'ID' ), 135 ); ?>
+						<div class="author-details">
+							
+							<h5 class="author-name"><?php echo get_the_author_meta('display_name');?></h5>							
+							<p><?php echo get_the_author_meta('description');?></p>
+
+						</div>
+					</div><!-- /.about-author -->
+
+				</div><!-- /.author-bio -->
+			</div><!-- /.author-bio-container -->
+			
+			<?php echo jwtheme_post_nav();?>
+			
+
+				<?php
+                		// If comments are open or we have at least one comment, load up the comment template
+				if ( comments_open() || '0' != get_comments_number() ) :
+					comments_template();
+				endif;
+				?>
+			
+			
+
+		</div><!-- /.post-container -->
+	</div><!-- /.col-md-8 -->
+	
+
+
+	<aside id="blog-sidebar" class="col-md-4">
+		<?php if ( is_dynamic_sidebar( 'blog-sidebar' ) ) { ?>
+		<?php dynamic_sidebar('blog-sidebar'); ?>
+		<?php } else{ get_sidebar(); }?>
+	</aside>
+	
